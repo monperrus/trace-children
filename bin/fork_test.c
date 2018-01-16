@@ -20,7 +20,7 @@ pid_t xclone(void (*child_callback)(void*), void* arg) {
     }
 }
 
-const double time_interval = 1.0 / 1e5; // seconds
+const double time_interval = 1.0 / 1e2; // seconds
 int num_work_op_per_sec = 1.5e8;
 
 void worker(double percentage_sleep) {
