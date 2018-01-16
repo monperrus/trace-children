@@ -75,5 +75,5 @@ Just add the 2 magic flags: `-Dtracechildrenuselib -ltracechildrenlib`
 ### Want to test trace-children in your house with a nice example?
 After installing, in the repository directory, run
 ```
- make; mkfifo a; ./build/bin/fork_test >a & ./build/bin/tracechildren <a && kill $! && rm a
+ make; mkfifo a; ./build/bin/fork_test >a & ./build/bin/tracechildren <a && pkill fork_test; && rm a
 ```
