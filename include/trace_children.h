@@ -23,6 +23,12 @@ void printProcessStatsPID(pid_t pid);
 
 void dealloc(struct ProcessStats* process);
 
+struct ProcessStats* getProcessStats(pid_t pid);
+
+void updateProcessStats(struct ProcessStats* process);
+
+void updateProcessStatsRecursive(struct ProcessStats* process);
+
 #ifndef tracechildrenuselib
 #include "tracechildren_src/trace_children.c"
 #endif

@@ -21,12 +21,10 @@ void dealloc(struct ProcessStats* process) {
     free(process);
 }
 
-void updateProcessInformationRecursive(struct ProcessStats* process);
-
 void printProcessStats(struct ProcessStats* process) {
     // compute percentage data
     xsleepms(10); // give it a little time to settle in
-    updateProcessInformationRecursive(process);
+    updateProcessStatsRecursive(process);
 
     for (int j = 1; j < INDENT_LEVEL / 2; j += 1) {
         printf(" ");
@@ -42,7 +40,7 @@ void printProcessStatsPID(pid_t pid) {
     dealloc(process);
 }
 
-void updateProcessInformation(struct ProcessStats* process) {
+void updateProcessStats(struct ProcessStats* process) {
     // read data from /proc/$/stat
 
     // compute time just after reading data so we know the correct time difference between 2 reads
@@ -68,11 +66,11 @@ void updateProcessInformation(struct ProcessStats* process) {
     process->last_update_time = current_time;
 }
 
-void updateProcessInformationRecursive(struct ProcessStats* process) {
-    updateProcessInformation(process);
+void updateProcessStatsRecursive(struct ProcessStats* process) {
+    updateProcessStats(process);
     struct ProcessStats** children = process->children;
     while (*children != NULL) {
-        updateProcessInformationRecursive(*children);
+        updateProcessStatsRecursive(*children);
         children++;
     }
 }
@@ -159,6 +157,6 @@ struct ProcessStats* getProcessStats(pid_t pid) {
     free(children_pid);
 
     // update child info
-    updateProcessInformation(process);
+    updateProcessStats(process);
     return process;
 }
