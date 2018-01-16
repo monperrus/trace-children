@@ -20,10 +20,13 @@ pid_t xclone(void (*child_callback)(void*), void* arg) {
     }
 }
 
-const double time_interval = 0.001; // seconds
-const int num_work_op_per_sec = 1.5e8;
+const double time_interval = 1.0 / 1e5; // seconds
+int num_work_op_per_sec = 1.5e8;
 
 void worker(double percentage_sleep) {
+    fprintf(stderr, "Process %d should work %.3f%s of the time\n", getpid(), (1.0 - percentage_sleep) * 100.0, "%");
+    fflush(stderr);
+
     struct timespec ts;
 /*    
     {
@@ -61,16 +64,35 @@ void createChildren(void* p) {
     
     srand(getpid());
 
-//    double percentage_sleep = 1.0 * rand() / RAND_MAX / 5 + 0.8;
-    double percentage_sleep = 1.0; 
-    printf("spawning worker with idle time = %.3f%s", (percentage_sleep) * 100.0, "%");
+    double percentage_sleep = 1.0 * rand() / RAND_MAX / 3 + 0.66;
     worker(percentage_sleep);
 }
 
-int main() {
-    xclone(createChildren, (void*)(getMock()));
+void computeRand() {
+    struct timespec start_time;
+    clock_gettime(CLOCK_REALTIME, &start_time);
+    int s = 0;
+    for (int i = 0; i < (int)1e7; i += 1) {
+        s += rand();
+    }
 
+     struct timespec end_time;
+    clock_gettime(CLOCK_REALTIME, &end_time);   
+    
+    double nsec_elapsed = (end_time.tv_sec - start_time.tv_sec) * 1e9 
+        + (end_time.tv_nsec - start_time.tv_nsec);
+
+    num_work_op_per_sec = 1e7 / (nsec_elapsed / 1e9);
+}
+
+int main() {
+    // compute the number of rand operations per sec
+    computeRand();
+
+    xclone(createChildren, (void*)(getMock()));
+    sleep(1);
     printf("%d\n", getpid());
+    fflush(stdout);
     struct timespec ts;
     ts.tv_sec = 1000;
     nanosleep(&ts, NULL);
