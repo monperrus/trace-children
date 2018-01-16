@@ -1,5 +1,5 @@
-#ifndef UTILS
-#define UTILS
+#ifndef TRACE_CHILDREN_SRC_UTILS_H
+#define TRACE_CHILDREN_SRC_UTILS_H
 
 #include <sys/types.h>
 
@@ -23,4 +23,8 @@ int file_exists(const char * path);
 
 char* to_char(int x);
 
+#ifndef tracechildrenuselib
+#include "tracechildren_src/utils.c"
 #endif
+
+#endif  // TRACE_CHILDREN_SRC_UTILS_H
