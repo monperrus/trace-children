@@ -71,3 +71,9 @@ int main(int argc, char* argv[]) {
 ### Do you like low compile times or you have a bigger project?
 Use static library to solve all your problems! 🎉  
 Just add the 2 magic flags: `-Dtracechildrenuselib -ltracechildrenlib`
+
+### Want to test trace-children in your house with a nice example?
+After installing, in the repository directory, run
+```
+ make; mkfifo a; ./build/bin/fork_test >a & ./build/bin/tracechildren <a && kill $! && rm a
+```
