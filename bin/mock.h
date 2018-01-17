@@ -9,7 +9,6 @@ struct ProcessStats* create(pid_t pid, double wall_time_ms, double user_time_ms,
     memset(p->children, 0, (num_children + 1) * sizeof(struct ProcessStats*));
 
     p->pid = pid;
-    p->wall_time_ms = wall_time_ms;
     p->user_time_ms = user_time_ms;
     p->system_time_ms = system_time_ms;
 

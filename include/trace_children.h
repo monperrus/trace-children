@@ -8,9 +8,26 @@
 
 struct ProcessStats {
     pid_t pid;
-    double wall_time_ms;
-    double user_time_ms;
-    double system_time_ms;
+
+    char state;
+    char name[17];
+    unsigned long minflt;
+    unsigned long cminflt;
+    unsigned long majflt;
+    unsigned long cmajflt;
+
+    long nice;
+    long num_threads;
+
+    unsigned long long starttime;
+    unsigned long vsize;
+    long rss;
+    unsigned long rsslim;
+
+    unsigned long user_time_ms;
+    unsigned long system_time_ms;
+
+    double cpu_percentage;
 
     struct timespec last_update_time;
 
@@ -29,7 +46,7 @@ void updateProcessStats(struct ProcessStats* process);
 
 void updateProcessStatsRecursive(struct ProcessStats* process);
 
-#ifndef tracechildrenuselib
+    #ifndef tracechildrenuselib
 #include "tracechildren_src/trace_children.c"
 #endif
 
